@@ -1,6 +1,7 @@
 "use client";
 import { useSearchParams, useParams } from "next/navigation";
 import useSWR from "swr";
+import { Card, CardHeader, CardContent } from "@/src/components/ui/Card";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
@@ -11,36 +12,39 @@ export default function TenantUsersPage() {
     fetcher
   );
 
-  async function addUser(formData: FormData) {
-    const name = String(formData.get("name") || "").trim();
-    const email = String(formData.get("email") || "").trim();
-    if (!email) return;
-    await fetch(`/api/tenants/${params.tenantId}/users`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email }),
-    });
-    mutate();
-  }
-
   return (
-    <main className="p-6">
-      <h1 className="text-xl font-semibold mb-4">Users in Tenant</h1>
-      <form action={addUser} className="mb-4 flex gap-2 flex-wrap">
-        <input name="name" placeholder="Name" className="border px-2 py-1" />
-        <input name="email" placeholder="Email" className="border px-2 py-1" />
-        <button className="bg-blue-600 text-white px-3 py-1 rounded">Add</button>
-      </form>
-      {isLoading && <p>Loading...</p>}
-      {error && <p className="text-red-600">Failed to load</p>}
-      <ul className="space-y-2">
-        {Array.isArray(data) && data.map((u: any) => (
-          <li key={u.id} className="border p-3 rounded">
-            <div className="font-medium">{u.name || u.email}</div>
-            <div className="text-xs text-gray-500">{u.email} · {u.id}</div>
-          </li>
-        ))}
-      </ul>
+    <main>
+      <div className="mb-6">
+        <h1 className="text-2xl font-semibold tracking-tight">Users</h1>
+        <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">All users for this tenant.</p>
+      </div>
+      <Card>
+        <CardHeader className="text-sm text-gray-600 dark:text-gray-400">Directory of users in the selected tenant.</CardHeader>
+        <CardContent>
+          {isLoading && (
+            <ul className="space-y-2">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <li key={i} className="rounded border p-3 dark:border-gray-800">
+                  <div className="h-4 w-48 animate-pulse rounded bg-gray-100 dark:bg-gray-800 mb-2" />
+                  <div className="h-3 w-64 animate-pulse rounded bg-gray-100 dark:bg-gray-800" />
+                </li>
+              ))}
+            </ul>
+          )}
+          {error && <p className="text-red-600">Failed to load users.</p>}
+          {Array.isArray(data) && data.length === 0 && (
+            <p className="text-gray-600 dark:text-gray-400">No users found for this tenant.</p>
+          )}
+          <ul className="space-y-2">
+            {Array.isArray(data) && data.map((u: any) => (
+              <li key={u.id} className="rounded border p-3 dark:border-gray-800">
+                <div className="font-medium">{u.name || u.email}</div>
+                <div className="text-xs text-gray-500">{u.email} · {u.id}</div>
+              </li>
+            ))}
+          </ul>
+        </CardContent>
+      </Card>
     </main>
   );
 }

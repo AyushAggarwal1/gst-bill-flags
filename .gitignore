@@ -40,7 +40,3 @@ next-env.d.ts
 
 # macos
 .DS_Store
-
-# exported data of prod database
-/exportedSupabaseDbProdEnv/
-/exportedPrismaDbProdEnv/

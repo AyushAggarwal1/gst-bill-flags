@@ -5,6 +5,8 @@ import type { NextRequest } from 'next/server'
 const PUBLIC_PATHS = new Set([
   '/login',
   '/api/login',
+  '/logout',
+  '/api/logout',
   // allow gst-bill to read flags without admin login
 ])
 
