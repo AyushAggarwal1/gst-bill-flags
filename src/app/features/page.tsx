@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
@@ -16,8 +17,10 @@ const ALL_FEATURES = [
   "HSN_SEARCH",
 ] as const;
 
-export default function FeaturesPage({ searchParams }: { searchParams?: { tenantId?: string } }) {
-  const [tenantId, setTenantId] = useState<string | undefined>(searchParams?.tenantId);
+function FeaturesPageContent() {
+  const sp = useSearchParams();
+  const initialTenantId = sp.get("tenantId") ?? undefined;
+  const [tenantId, setTenantId] = useState<string | undefined>(initialTenantId);
   const { data: tenants } = useSWR("/api/tenants", fetcher);
   const { data: flags, mutate } = useSWR(
     () => (tenantId ? `/api/tenants/${tenantId}/features` : null),
@@ -88,6 +91,14 @@ export default function FeaturesPage({ searchParams }: { searchParams?: { tenant
         </div>
       )}
     </main>
+  );
+}
+
+export default function FeaturesPage() {
+  return (
+    <Suspense fallback={null}>
+      <FeaturesPageContent />
+    </Suspense>
   );
 }
 

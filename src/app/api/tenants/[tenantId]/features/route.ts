@@ -4,29 +4,31 @@ import type { Feature } from "src/generated/prisma";
 
 export async function GET(
   _req: Request,
-  { params }: { params: { tenantId: string } }
+  { params }: any
 ) {
+  const tenantId = Array.isArray(params.tenantId) ? params.tenantId[0] : params.tenantId;
   const flags = await prisma.tenantFeatureFlag.findMany({
-    where: { tenantId: params.tenantId },
+    where: { tenantId },
   });
   return NextResponse.json(flags);
 }
 
 export async function PUT(
   req: Request,
-  { params }: { params: { tenantId: string } }
+  { params }: any
 ) {
   const body = await req.json();
+  const tenantId = Array.isArray(params.tenantId) ? params.tenantId[0] : params.tenantId;
   // body: { feature: Feature, enabled: boolean }
   const updated = await prisma.tenantFeatureFlag.upsert({
     where: {
       tenantId_feature: {
-        tenantId: params.tenantId,
+        tenantId,
         feature: body.feature as Feature,
       },
     },
     create: {
-      tenantId: params.tenantId,
+      tenantId,
       feature: body.feature as Feature,
       enabled: Boolean(body.enabled),
     },
