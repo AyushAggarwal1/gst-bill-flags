@@ -1,36 +1,31 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Header from "@/src/components/Header";
+import { Inter } from "next/font/google";
+import { ToastProvider } from "@/src/components/ui/Toast";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "GST Bill Flags Admin",
-  description: "Manage tenant-level feature flags for GST Bill",
+  title: "GSTly Admin",
+  description: "Manage tenant-level feature flags for GSTly",
+  icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body className="min-h-screen">
-        <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
-          <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded bg-primary-600" />
-              <span className="font-semibold">GST Bill Flags Admin</span>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.className}`}>
+        <ToastProvider>
+          <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+            <Header />
+            <div className="mx-auto max-w-7xl px-6 py-8">
+              {children}
             </div>
-            <nav className="flex items-center gap-4 text-sm">
-              <a className="text-gray-600 hover:text-gray-900" href="/">Home</a>
-              <a className="text-gray-600 hover:text-gray-900" href="/tenants">Tenants</a>
-              <a className="text-gray-600 hover:text-gray-900" href="/features">Features</a>
-              <form action="/api/logout" method="post">
-                <button className="text-gray-600 hover:text-gray-900" type="submit">Logout</button>
-              </form>
-            </nav>
           </div>
-        </header>
-        <div className="max-w-6xl mx-auto px-4 py-6">
-          {children}
-        </div>
+        </ToastProvider>
       </body>
     </html>
   );

@@ -6,3 +6,33 @@ html, body {
   @apply h-full bg-gray-50 text-gray-900;
 }
 
+/* Base tokens */
+@layer base {
+  :root {
+    --ring: 72 86% 55%;
+  }
+
+  * {
+    @apply border-gray-200;
+  }
+
+  body {
+    @apply bg-gray-50 text-gray-900 antialiased;
+  }
+
+  a {
+    @apply underline-offset-4 decoration-transparent hover:decoration-current;
+  }
+
+  ::selection {
+    @apply bg-primary-300/60 text-gray-900;
+  }
+}
+
+/* Reusable primitives */
+@layer components {
+  .focus-ring {
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/80 focus-visible:ring-offset-2 focus-visible:ring-offset-white;
+  }
+}
+
