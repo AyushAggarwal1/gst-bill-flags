@@ -45,7 +45,7 @@ export const Feature: typeof $Enums.Feature
 
 /**
  * ##  Prisma Client ʲˢ
- * 
+ *
  * Type-safe database client for TypeScript & Node.js
  * @example
  * ```
@@ -54,19 +54,19 @@ export const Feature: typeof $Enums.Feature
  * const tenantFeatureFlags = await prisma.tenantFeatureFlag.findMany()
  * ```
  *
- * 
+ *
  * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
  */
 export class PrismaClient<
   ClientOptions extends Prisma.PrismaClientOptions = Prisma.PrismaClientOptions,
-  U = 'log' extends keyof ClientOptions ? ClientOptions['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<ClientOptions['log']> : never : never,
+  const U = 'log' extends keyof ClientOptions ? ClientOptions['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<ClientOptions['log']> : never : never,
   ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs
 > {
   [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['other'] }
 
     /**
    * ##  Prisma Client ʲˢ
-   * 
+   *
    * Type-safe database client for TypeScript & Node.js
    * @example
    * ```
@@ -75,12 +75,12 @@ export class PrismaClient<
    * const tenantFeatureFlags = await prisma.tenantFeatureFlag.findMany()
    * ```
    *
-   * 
+   *
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
    */
 
   constructor(optionsArg ?: Prisma.Subset<ClientOptions, Prisma.PrismaClientOptions>);
-  $on<V extends U>(eventType: V, callback: (event: V extends 'query' ? Prisma.QueryEvent : Prisma.LogEvent) => void): void;
+  $on<V extends U>(eventType: V, callback: (event: V extends 'query' ? Prisma.QueryEvent : Prisma.LogEvent) => void): PrismaClient;
 
   /**
    * Connect with the database
@@ -92,20 +92,13 @@ export class PrismaClient<
    */
   $disconnect(): $Utils.JsPromise<void>;
 
-  /**
-   * Add a middleware
-   * @deprecated since 4.16.0. For new code, prefer client extensions instead.
-   * @see https://pris.ly/d/extensions
-   */
-  $use(cb: Prisma.Middleware): void
-
 /**
    * Executes a prepared raw query and returns the number of affected rows.
    * @example
    * ```
    * const result = await prisma.$executeRaw`UPDATE User SET cool = ${true} WHERE email = ${'user@email.com'};`
    * ```
-   * 
+   *
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
   $executeRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<number>;
@@ -117,7 +110,7 @@ export class PrismaClient<
    * ```
    * const result = await prisma.$executeRawUnsafe('UPDATE User SET cool = $1 WHERE email = $2 ;', true, 'user@email.com')
    * ```
-   * 
+   *
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
   $executeRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<number>;
@@ -128,7 +121,7 @@ export class PrismaClient<
    * ```
    * const result = await prisma.$queryRaw`SELECT * FROM User WHERE id = ${1} OR email = ${'user@email.com'};`
    * ```
-   * 
+   *
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
   $queryRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<T>;
@@ -140,7 +133,7 @@ export class PrismaClient<
    * ```
    * const result = await prisma.$queryRawUnsafe('SELECT * FROM User WHERE id = $1 OR email = $2;', 1, 'user@email.com')
    * ```
-   * 
+   *
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
   $queryRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<T>;
@@ -164,7 +157,9 @@ export class PrismaClient<
   $transaction<R>(fn: (prisma: Omit<PrismaClient, runtime.ITXClientDenyList>) => $Utils.JsPromise<R>, options?: { maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<R>
 
 
-  $extends: $Extensions.ExtendsHook<"extends", Prisma.TypeMapCb, ExtArgs>
+  $extends: $Extensions.ExtendsHook<"extends", Prisma.TypeMapCb<ClientOptions>, ExtArgs, $Utils.Call<Prisma.TypeMapCb<ClientOptions>, {
+    extArgs: ExtArgs
+  }>>
 
       /**
    * `prisma.tenantFeatureFlag`: Exposes CRUD operations for the **TenantFeatureFlag** model.
@@ -174,7 +169,7 @@ export class PrismaClient<
     * const tenantFeatureFlags = await prisma.tenantFeatureFlag.findMany()
     * ```
     */
-  get tenantFeatureFlag(): Prisma.TenantFeatureFlagDelegate<ExtArgs>;
+  get tenantFeatureFlag(): Prisma.TenantFeatureFlagDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -195,7 +190,6 @@ export namespace Prisma {
   export import PrismaClientRustPanicError = runtime.PrismaClientRustPanicError
   export import PrismaClientInitializationError = runtime.PrismaClientInitializationError
   export import PrismaClientValidationError = runtime.PrismaClientValidationError
-  export import NotFoundError = runtime.NotFoundError
 
   /**
    * Re-export of sql-template-tag
@@ -216,7 +210,7 @@ export namespace Prisma {
   export type DecimalJsLike = runtime.DecimalJsLike
 
   /**
-   * Metrics 
+   * Metrics
    */
   export type Metrics = runtime.Metrics
   export type Metric<T> = runtime.Metric<T>
@@ -234,14 +228,14 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 5.22.0
-   * Query Engine version: 605197351a3c8bdd595af2d2a9bc3025bca48ea2
+   * Prisma Client JS version: 6.15.0
+   * Query Engine version: 85179d7826409ee107a6ba334b5e305ae3fba9fb
    */
   export type PrismaVersion = {
     client: string
   }
 
-  export const prismaVersion: PrismaVersion 
+  export const prismaVersion: PrismaVersion
 
   /**
    * Utility Types
@@ -257,15 +251,15 @@ export namespace Prisma {
 
   /**
    * Types of the values used to represent different kinds of `null` values when working with JSON fields.
-   * 
+   *
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
   namespace NullTypes {
     /**
     * Type of `Prisma.DbNull`.
-    * 
+    *
     * You cannot use other instances of this class. Please use the `Prisma.DbNull` value.
-    * 
+    *
     * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
     */
     class DbNull {
@@ -275,9 +269,9 @@ export namespace Prisma {
 
     /**
     * Type of `Prisma.JsonNull`.
-    * 
+    *
     * You cannot use other instances of this class. Please use the `Prisma.JsonNull` value.
-    * 
+    *
     * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
     */
     class JsonNull {
@@ -287,9 +281,9 @@ export namespace Prisma {
 
     /**
     * Type of `Prisma.AnyNull`.
-    * 
+    *
     * You cannot use other instances of this class. Please use the `Prisma.AnyNull` value.
-    * 
+    *
     * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
     */
     class AnyNull {
@@ -300,21 +294,21 @@ export namespace Prisma {
 
   /**
    * Helper for filtering JSON entries that have `null` on the database (empty on the db)
-   * 
+   *
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
   export const DbNull: NullTypes.DbNull
 
   /**
    * Helper for filtering JSON entries that have JSON `null` values (not empty on the db)
-   * 
+   *
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
   export const JsonNull: NullTypes.JsonNull
 
   /**
    * Helper for filtering JSON entries that are `Prisma.DbNull` or `Prisma.JsonNull`
-   * 
+   *
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
   export const AnyNull: NullTypes.AnyNull
@@ -502,7 +496,7 @@ export namespace Prisma {
   type AtLeast<O extends object, K extends string> = NoExpand<
     O extends unknown
     ? | (K extends keyof O ? { [P in K]: O[P] } & O : O)
-      | {[P in keyof O as P extends K ? K : never]-?: O[P]} & O
+      | {[P in keyof O as P extends K ? P : never]-?: O[P]} & O
     : never>;
 
   type _Strict<U, _U = U> = U extends unknown ? U & OptionalFlat<_Record<Exclude<Keys<_U>, keyof U>, never>> : never;
@@ -626,11 +620,14 @@ export namespace Prisma {
     db?: Datasource
   }
 
-  interface TypeMapCb extends $Utils.Fn<{extArgs: $Extensions.InternalArgs, clientOptions: PrismaClientOptions }, $Utils.Record<string, any>> {
-    returns: Prisma.TypeMap<this['params']['extArgs'], this['params']['clientOptions']>
+  interface TypeMapCb<ClientOptions = {}> extends $Utils.Fn<{extArgs: $Extensions.InternalArgs }, $Utils.Record<string, any>> {
+    returns: Prisma.TypeMap<this['params']['extArgs'], ClientOptions extends { omit: infer OmitOptions } ? OmitOptions : {}>
   }
 
-  export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
+  export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> = {
+    globalOmitOptions: {
+      omit: GlobalOmitOptions
+    }
     meta: {
       modelProps: "tenantFeatureFlag"
       txIsolationLevel: Prisma.TransactionIsolationLevel
@@ -687,6 +684,10 @@ export namespace Prisma {
           updateMany: {
             args: Prisma.TenantFeatureFlagUpdateManyArgs<ExtArgs>
             result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TenantFeatureFlagUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TenantFeatureFlagPayload>[]
           }
           upsert: {
             args: Prisma.TenantFeatureFlagUpsertArgs<ExtArgs>
@@ -749,16 +750,24 @@ export namespace Prisma {
     /**
      * @example
      * ```
-     * // Defaults to stdout
+     * // Shorthand for `emit: 'stdout'`
      * log: ['query', 'info', 'warn', 'error']
      * 
-     * // Emit as events
+     * // Emit as events only
      * log: [
-     *   { emit: 'stdout', level: 'query' },
-     *   { emit: 'stdout', level: 'info' },
-     *   { emit: 'stdout', level: 'warn' }
-     *   { emit: 'stdout', level: 'error' }
+     *   { emit: 'event', level: 'query' },
+     *   { emit: 'event', level: 'info' },
+     *   { emit: 'event', level: 'warn' }
+     *   { emit: 'event', level: 'error' }
      * ]
+     * 
+     * / Emit as events and log to stdout
+     * og: [
+     *  { emit: 'stdout', level: 'query' },
+     *  { emit: 'stdout', level: 'info' },
+     *  { emit: 'stdout', level: 'warn' }
+     *  { emit: 'stdout', level: 'error' }
+     * 
      * ```
      * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/logging#the-log-option).
      */
@@ -773,8 +782,25 @@ export namespace Prisma {
       timeout?: number
       isolationLevel?: Prisma.TransactionIsolationLevel
     }
+    /**
+     * Global configuration for omitting model fields by default.
+     * 
+     * @example
+     * ```
+     * const prisma = new PrismaClient({
+     *   omit: {
+     *     user: {
+     *       password: true
+     *     }
+     *   }
+     * })
+     * ```
+     */
+    omit?: Prisma.GlobalOmitConfig
   }
-
+  export type GlobalOmitConfig = {
+    tenantFeatureFlag?: TenantFeatureFlagOmit
+  }
 
   /* Types for Logging */
   export type LogLevel = 'info' | 'query' | 'warn' | 'error'
@@ -783,10 +809,15 @@ export namespace Prisma {
     emit: 'stdout' | 'event'
   }
 
-  export type GetLogType<T extends LogLevel | LogDefinition> = T extends LogDefinition ? T['emit'] extends 'event' ? T['level'] : never : never
-  export type GetEvents<T extends any> = T extends Array<LogLevel | LogDefinition> ?
-    GetLogType<T[0]> | GetLogType<T[1]> | GetLogType<T[2]> | GetLogType<T[3]>
-    : never
+  export type CheckIsLogLevel<T> = T extends LogLevel ? T : never;
+
+  export type GetLogType<T> = CheckIsLogLevel<
+    T extends LogDefinition ? T['level'] : T
+  >;
+
+  export type GetEvents<T extends any[]> = T extends Array<LogLevel | LogDefinition>
+    ? GetLogType<T[number]>
+    : never;
 
   export type QueryEvent = {
     timestamp: Date
@@ -815,6 +846,7 @@ export namespace Prisma {
     | 'createManyAndReturn'
     | 'update'
     | 'updateMany'
+    | 'updateManyAndReturn'
     | 'upsert'
     | 'delete'
     | 'deleteMany'
@@ -825,25 +857,6 @@ export namespace Prisma {
     | 'runCommandRaw'
     | 'findRaw'
     | 'groupBy'
-
-  /**
-   * These options are being passed into the middleware as "params"
-   */
-  export type MiddlewareParams = {
-    model?: ModelName
-    action: PrismaAction
-    args: any
-    dataPath: string[]
-    runInTransaction: boolean
-  }
-
-  /**
-   * The `T` type makes sure, that the `return proceed` is not forgotten in the middleware implementation
-   */
-  export type Middleware<T = any> = (
-    params: MiddlewareParams,
-    next: (params: MiddlewareParams) => $Utils.JsPromise<T>,
-  ) => $Utils.JsPromise<T>
 
   // tested in getLogLevel.test.ts
   export function getLogLevel(log: Array<LogLevel | LogDefinition>): LogLevel | undefined;
@@ -1050,6 +1063,15 @@ export namespace Prisma {
     updatedAt?: boolean
   }, ExtArgs["result"]["tenantFeatureFlag"]>
 
+  export type TenantFeatureFlagSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    feature?: boolean
+    enabled?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["tenantFeatureFlag"]>
+
   export type TenantFeatureFlagSelectScalar = {
     id?: boolean
     tenantId?: boolean
@@ -1059,6 +1081,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
+  export type TenantFeatureFlagOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "feature" | "enabled" | "createdAt" | "updatedAt", ExtArgs["result"]["tenantFeatureFlag"]>
 
   export type $TenantFeatureFlagPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "TenantFeatureFlag"
@@ -1076,12 +1099,12 @@ export namespace Prisma {
 
   type TenantFeatureFlagGetPayload<S extends boolean | null | undefined | TenantFeatureFlagDefaultArgs> = $Result.GetResult<Prisma.$TenantFeatureFlagPayload, S>
 
-  type TenantFeatureFlagCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
-    Omit<TenantFeatureFlagFindManyArgs, 'select' | 'include' | 'distinct'> & {
+  type TenantFeatureFlagCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TenantFeatureFlagFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
       select?: TenantFeatureFlagCountAggregateInputType | true
     }
 
-  export interface TenantFeatureFlagDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+  export interface TenantFeatureFlagDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
     [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TenantFeatureFlag'], meta: { name: 'TenantFeatureFlag' } }
     /**
      * Find zero or one TenantFeatureFlag that matches the filter.
@@ -1094,10 +1117,10 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUnique<T extends TenantFeatureFlagFindUniqueArgs>(args: SelectSubset<T, TenantFeatureFlagFindUniqueArgs<ExtArgs>>): Prisma__TenantFeatureFlagClient<$Result.GetResult<Prisma.$TenantFeatureFlagPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+    findUnique<T extends TenantFeatureFlagFindUniqueArgs>(args: SelectSubset<T, TenantFeatureFlagFindUniqueArgs<ExtArgs>>): Prisma__TenantFeatureFlagClient<$Result.GetResult<Prisma.$TenantFeatureFlagPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one TenantFeatureFlag that matches the filter or throw an error with `error.code='P2025'` 
+     * Find one TenantFeatureFlag that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
      * @param {TenantFeatureFlagFindUniqueOrThrowArgs} args - Arguments to find a TenantFeatureFlag
      * @example
@@ -1108,7 +1131,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUniqueOrThrow<T extends TenantFeatureFlagFindUniqueOrThrowArgs>(args: SelectSubset<T, TenantFeatureFlagFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TenantFeatureFlagClient<$Result.GetResult<Prisma.$TenantFeatureFlagPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+    findUniqueOrThrow<T extends TenantFeatureFlagFindUniqueOrThrowArgs>(args: SelectSubset<T, TenantFeatureFlagFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TenantFeatureFlagClient<$Result.GetResult<Prisma.$TenantFeatureFlagPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
      * Find the first TenantFeatureFlag that matches the filter.
@@ -1123,7 +1146,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirst<T extends TenantFeatureFlagFindFirstArgs>(args?: SelectSubset<T, TenantFeatureFlagFindFirstArgs<ExtArgs>>): Prisma__TenantFeatureFlagClient<$Result.GetResult<Prisma.$TenantFeatureFlagPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+    findFirst<T extends TenantFeatureFlagFindFirstArgs>(args?: SelectSubset<T, TenantFeatureFlagFindFirstArgs<ExtArgs>>): Prisma__TenantFeatureFlagClient<$Result.GetResult<Prisma.$TenantFeatureFlagPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
      * Find the first TenantFeatureFlag that matches the filter or
@@ -1139,7 +1162,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirstOrThrow<T extends TenantFeatureFlagFindFirstOrThrowArgs>(args?: SelectSubset<T, TenantFeatureFlagFindFirstOrThrowArgs<ExtArgs>>): Prisma__TenantFeatureFlagClient<$Result.GetResult<Prisma.$TenantFeatureFlagPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+    findFirstOrThrow<T extends TenantFeatureFlagFindFirstOrThrowArgs>(args?: SelectSubset<T, TenantFeatureFlagFindFirstOrThrowArgs<ExtArgs>>): Prisma__TenantFeatureFlagClient<$Result.GetResult<Prisma.$TenantFeatureFlagPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
      * Find zero or more TenantFeatureFlags that matches the filter.
@@ -1157,7 +1180,7 @@ export namespace Prisma {
      * const tenantFeatureFlagWithIdOnly = await prisma.tenantFeatureFlag.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends TenantFeatureFlagFindManyArgs>(args?: SelectSubset<T, TenantFeatureFlagFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TenantFeatureFlagPayload<ExtArgs>, T, "findMany">>
+    findMany<T extends TenantFeatureFlagFindManyArgs>(args?: SelectSubset<T, TenantFeatureFlagFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TenantFeatureFlagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
      * Create a TenantFeatureFlag.
@@ -1171,7 +1194,7 @@ export namespace Prisma {
      * })
      * 
      */
-    create<T extends TenantFeatureFlagCreateArgs>(args: SelectSubset<T, TenantFeatureFlagCreateArgs<ExtArgs>>): Prisma__TenantFeatureFlagClient<$Result.GetResult<Prisma.$TenantFeatureFlagPayload<ExtArgs>, T, "create">, never, ExtArgs>
+    create<T extends TenantFeatureFlagCreateArgs>(args: SelectSubset<T, TenantFeatureFlagCreateArgs<ExtArgs>>): Prisma__TenantFeatureFlagClient<$Result.GetResult<Prisma.$TenantFeatureFlagPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
      * Create many TenantFeatureFlags.
@@ -1199,7 +1222,7 @@ export namespace Prisma {
      * })
      * 
      * // Create many TenantFeatureFlags and only return the `id`
-     * const tenantFeatureFlagWithIdOnly = await prisma.tenantFeatureFlag.createManyAndReturn({ 
+     * const tenantFeatureFlagWithIdOnly = await prisma.tenantFeatureFlag.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -1209,7 +1232,7 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends TenantFeatureFlagCreateManyAndReturnArgs>(args?: SelectSubset<T, TenantFeatureFlagCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TenantFeatureFlagPayload<ExtArgs>, T, "createManyAndReturn">>
+    createManyAndReturn<T extends TenantFeatureFlagCreateManyAndReturnArgs>(args?: SelectSubset<T, TenantFeatureFlagCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TenantFeatureFlagPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
      * Delete a TenantFeatureFlag.
@@ -1223,7 +1246,7 @@ export namespace Prisma {
      * })
      * 
      */
-    delete<T extends TenantFeatureFlagDeleteArgs>(args: SelectSubset<T, TenantFeatureFlagDeleteArgs<ExtArgs>>): Prisma__TenantFeatureFlagClient<$Result.GetResult<Prisma.$TenantFeatureFlagPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+    delete<T extends TenantFeatureFlagDeleteArgs>(args: SelectSubset<T, TenantFeatureFlagDeleteArgs<ExtArgs>>): Prisma__TenantFeatureFlagClient<$Result.GetResult<Prisma.$TenantFeatureFlagPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
      * Update one TenantFeatureFlag.
@@ -1240,7 +1263,7 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends TenantFeatureFlagUpdateArgs>(args: SelectSubset<T, TenantFeatureFlagUpdateArgs<ExtArgs>>): Prisma__TenantFeatureFlagClient<$Result.GetResult<Prisma.$TenantFeatureFlagPayload<ExtArgs>, T, "update">, never, ExtArgs>
+    update<T extends TenantFeatureFlagUpdateArgs>(args: SelectSubset<T, TenantFeatureFlagUpdateArgs<ExtArgs>>): Prisma__TenantFeatureFlagClient<$Result.GetResult<Prisma.$TenantFeatureFlagPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
      * Delete zero or more TenantFeatureFlags.
@@ -1276,6 +1299,36 @@ export namespace Prisma {
     updateMany<T extends TenantFeatureFlagUpdateManyArgs>(args: SelectSubset<T, TenantFeatureFlagUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
+     * Update zero or more TenantFeatureFlags and returns the data updated in the database.
+     * @param {TenantFeatureFlagUpdateManyAndReturnArgs} args - Arguments to update many TenantFeatureFlags.
+     * @example
+     * // Update many TenantFeatureFlags
+     * const tenantFeatureFlag = await prisma.tenantFeatureFlag.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TenantFeatureFlags and only return the `id`
+     * const tenantFeatureFlagWithIdOnly = await prisma.tenantFeatureFlag.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TenantFeatureFlagUpdateManyAndReturnArgs>(args: SelectSubset<T, TenantFeatureFlagUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TenantFeatureFlagPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
      * Create or update one TenantFeatureFlag.
      * @param {TenantFeatureFlagUpsertArgs} args - Arguments to update or create a TenantFeatureFlag.
      * @example
@@ -1292,7 +1345,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    upsert<T extends TenantFeatureFlagUpsertArgs>(args: SelectSubset<T, TenantFeatureFlagUpsertArgs<ExtArgs>>): Prisma__TenantFeatureFlagClient<$Result.GetResult<Prisma.$TenantFeatureFlagPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+    upsert<T extends TenantFeatureFlagUpsertArgs>(args: SelectSubset<T, TenantFeatureFlagUpsertArgs<ExtArgs>>): Prisma__TenantFeatureFlagClient<$Result.GetResult<Prisma.$TenantFeatureFlagPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
@@ -1432,7 +1485,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__TenantFeatureFlagClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__TenantFeatureFlagClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1461,7 +1514,7 @@ export namespace Prisma {
 
   /**
    * Fields of the TenantFeatureFlag model
-   */ 
+   */
   interface TenantFeatureFlagFieldRefs {
     readonly id: FieldRef<"TenantFeatureFlag", 'String'>
     readonly tenantId: FieldRef<"TenantFeatureFlag", 'String'>
@@ -1482,6 +1535,10 @@ export namespace Prisma {
      */
     select?: TenantFeatureFlagSelect<ExtArgs> | null
     /**
+     * Omit specific fields from the TenantFeatureFlag
+     */
+    omit?: TenantFeatureFlagOmit<ExtArgs> | null
+    /**
      * Filter, which TenantFeatureFlag to fetch.
      */
     where: TenantFeatureFlagWhereUniqueInput
@@ -1496,6 +1553,10 @@ export namespace Prisma {
      */
     select?: TenantFeatureFlagSelect<ExtArgs> | null
     /**
+     * Omit specific fields from the TenantFeatureFlag
+     */
+    omit?: TenantFeatureFlagOmit<ExtArgs> | null
+    /**
      * Filter, which TenantFeatureFlag to fetch.
      */
     where: TenantFeatureFlagWhereUniqueInput
@@ -1509,6 +1570,10 @@ export namespace Prisma {
      * Select specific fields to fetch from the TenantFeatureFlag
      */
     select?: TenantFeatureFlagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TenantFeatureFlag
+     */
+    omit?: TenantFeatureFlagOmit<ExtArgs> | null
     /**
      * Filter, which TenantFeatureFlag to fetch.
      */
@@ -1554,6 +1619,10 @@ export namespace Prisma {
      */
     select?: TenantFeatureFlagSelect<ExtArgs> | null
     /**
+     * Omit specific fields from the TenantFeatureFlag
+     */
+    omit?: TenantFeatureFlagOmit<ExtArgs> | null
+    /**
      * Filter, which TenantFeatureFlag to fetch.
      */
     where?: TenantFeatureFlagWhereInput
@@ -1598,6 +1667,10 @@ export namespace Prisma {
      */
     select?: TenantFeatureFlagSelect<ExtArgs> | null
     /**
+     * Omit specific fields from the TenantFeatureFlag
+     */
+    omit?: TenantFeatureFlagOmit<ExtArgs> | null
+    /**
      * Filter, which TenantFeatureFlags to fetch.
      */
     where?: TenantFeatureFlagWhereInput
@@ -1637,6 +1710,10 @@ export namespace Prisma {
      */
     select?: TenantFeatureFlagSelect<ExtArgs> | null
     /**
+     * Omit specific fields from the TenantFeatureFlag
+     */
+    omit?: TenantFeatureFlagOmit<ExtArgs> | null
+    /**
      * The data needed to create a TenantFeatureFlag.
      */
     data: XOR<TenantFeatureFlagCreateInput, TenantFeatureFlagUncheckedCreateInput>
@@ -1662,6 +1739,10 @@ export namespace Prisma {
      */
     select?: TenantFeatureFlagSelectCreateManyAndReturn<ExtArgs> | null
     /**
+     * Omit specific fields from the TenantFeatureFlag
+     */
+    omit?: TenantFeatureFlagOmit<ExtArgs> | null
+    /**
      * The data used to create many TenantFeatureFlags.
      */
     data: TenantFeatureFlagCreateManyInput | TenantFeatureFlagCreateManyInput[]
@@ -1676,6 +1757,10 @@ export namespace Prisma {
      * Select specific fields to fetch from the TenantFeatureFlag
      */
     select?: TenantFeatureFlagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TenantFeatureFlag
+     */
+    omit?: TenantFeatureFlagOmit<ExtArgs> | null
     /**
      * The data needed to update a TenantFeatureFlag.
      */
@@ -1698,6 +1783,36 @@ export namespace Prisma {
      * Filter which TenantFeatureFlags to update
      */
     where?: TenantFeatureFlagWhereInput
+    /**
+     * Limit how many TenantFeatureFlags to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TenantFeatureFlag updateManyAndReturn
+   */
+  export type TenantFeatureFlagUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TenantFeatureFlag
+     */
+    select?: TenantFeatureFlagSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TenantFeatureFlag
+     */
+    omit?: TenantFeatureFlagOmit<ExtArgs> | null
+    /**
+     * The data used to update TenantFeatureFlags.
+     */
+    data: XOR<TenantFeatureFlagUpdateManyMutationInput, TenantFeatureFlagUncheckedUpdateManyInput>
+    /**
+     * Filter which TenantFeatureFlags to update
+     */
+    where?: TenantFeatureFlagWhereInput
+    /**
+     * Limit how many TenantFeatureFlags to update.
+     */
+    limit?: number
   }
 
   /**
@@ -1708,6 +1823,10 @@ export namespace Prisma {
      * Select specific fields to fetch from the TenantFeatureFlag
      */
     select?: TenantFeatureFlagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TenantFeatureFlag
+     */
+    omit?: TenantFeatureFlagOmit<ExtArgs> | null
     /**
      * The filter to search for the TenantFeatureFlag to update in case it exists.
      */
@@ -1731,6 +1850,10 @@ export namespace Prisma {
      */
     select?: TenantFeatureFlagSelect<ExtArgs> | null
     /**
+     * Omit specific fields from the TenantFeatureFlag
+     */
+    omit?: TenantFeatureFlagOmit<ExtArgs> | null
+    /**
      * Filter which TenantFeatureFlag to delete.
      */
     where: TenantFeatureFlagWhereUniqueInput
@@ -1744,6 +1867,10 @@ export namespace Prisma {
      * Filter which TenantFeatureFlags to delete
      */
     where?: TenantFeatureFlagWhereInput
+    /**
+     * Limit how many TenantFeatureFlags to delete.
+     */
+    limit?: number
   }
 
   /**
@@ -1754,6 +1881,10 @@ export namespace Prisma {
      * Select specific fields to fetch from the TenantFeatureFlag
      */
     select?: TenantFeatureFlagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TenantFeatureFlag
+     */
+    omit?: TenantFeatureFlagOmit<ExtArgs> | null
   }
 
 
@@ -1800,7 +1931,7 @@ export namespace Prisma {
 
 
   /**
-   * Field references 
+   * Field references
    */
 
 
@@ -2225,14 +2356,6 @@ export namespace Prisma {
   }
 
 
-
-  /**
-   * Aliases for legacy arg types
-   */
-    /**
-     * @deprecated Use TenantFeatureFlagDefaultArgs instead
-     */
-    export type TenantFeatureFlagArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = TenantFeatureFlagDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany

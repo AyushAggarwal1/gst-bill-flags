@@ -2,12 +2,13 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   _req: Request,
-  { params }: { params: { tenantId: string } }
+  { params }: any
 ) {
   const base = process.env.BILL_SERVICE_URL;
   const token = process.env.FLAGS_ADMIN_TOKEN;
+  const tenantId = Array.isArray(params.tenantId) ? params.tenantId[0] : params.tenantId;
   if (base && token) {
-    const res = await fetch(`${base}/api/admin/tenants/${params.tenantId}/users`, {
+    const res = await fetch(`${base}/api/admin/tenants/${tenantId}/users`, {
       headers: { Authorization: `Bearer ${token}` },
       cache: "no-store",
     });
@@ -22,15 +23,16 @@ export async function GET(
 
 export async function POST(
   req: Request,
-  { params }: { params: { tenantId: string } }
+  { params }: any
 ) {
   const body = await req.json();
   const base = process.env.BILL_SERVICE_URL;
   const token = process.env.FLAGS_ADMIN_TOKEN;
+  const tenantId = Array.isArray(params.tenantId) ? params.tenantId[0] : params.tenantId;
   if (!base || !token) {
     return NextResponse.json({ error: "BILL_SERVICE_URL or FLAGS_ADMIN_TOKEN not configured" }, { status: 500 });
   }
-  const res = await fetch(`${base}/api/admin/tenants/${params.tenantId}/users`, {
+  const res = await fetch(`${base}/api/admin/tenants/${tenantId}/users`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
