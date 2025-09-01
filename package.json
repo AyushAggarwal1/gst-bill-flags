@@ -1,0 +1,30 @@
+{
+  "name": "gst-bill-flags",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev --name init_flags",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.18.0",
+    "next": "14.2.5",
+    "next-auth": "^4.24.7",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "swr": "^2.3.6",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "@types/node": "24.3.0",
+    "@types/react": "19.1.12",
+    "prisma": "^5.18.0",
+    "tailwindcss": "^3.4.10",
+    "typescript": "5.5.4"
+  }
+}
