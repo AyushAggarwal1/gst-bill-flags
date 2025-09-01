@@ -1,4 +1,3 @@
-import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 export async function GET(
@@ -16,12 +15,9 @@ export async function GET(
       const data = await res.json();
       return NextResponse.json(data);
     }
+    return NextResponse.json({ error: "Failed to fetch users from BILL service" }, { status: res.status });
   }
-  const users = await prisma.user.findMany({
-    where: { tenantId: params.tenantId },
-    orderBy: { createdAt: "desc" },
-  });
-  return NextResponse.json(users);
+  return NextResponse.json({ error: "BILL_SERVICE_URL or FLAGS_ADMIN_TOKEN not configured" }, { status: 500 });
 }
 
 export async function POST(
@@ -29,13 +25,21 @@ export async function POST(
   { params }: { params: { tenantId: string } }
 ) {
   const body = await req.json();
-  const user = await prisma.user.create({
-    data: {
-      name: body.name,
-      email: body.email,
-      tenantId: params.tenantId,
+  const base = process.env.BILL_SERVICE_URL;
+  const token = process.env.FLAGS_ADMIN_TOKEN;
+  if (!base || !token) {
+    return NextResponse.json({ error: "BILL_SERVICE_URL or FLAGS_ADMIN_TOKEN not configured" }, { status: 500 });
+  }
+  const res = await fetch(`${base}/api/admin/tenants/${params.tenantId}/users`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     },
+    body: JSON.stringify(body),
+    cache: "no-store",
   });
-  return NextResponse.json(user, { status: 201 });
+  const data = await res.json();
+  return NextResponse.json(data, { status: res.status });
 }
 
