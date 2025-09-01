@@ -6,8 +6,6 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev --name init_flags",
     "lint": "next lint"
   },
   "dependencies": {
