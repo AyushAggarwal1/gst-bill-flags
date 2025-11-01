@@ -10,7 +10,7 @@ const PUBLIC_PATHS = new Set([
   // allow gst-bill to read flags without admin login
 ])
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl
 
   // Allow feature reads for gst-bill without cookie
