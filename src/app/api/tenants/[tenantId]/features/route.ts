@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import type { Feature } from "src/generated/prisma";
+import type { Feature } from "../../../../../generated/prisma";
 
 export async function GET(
   _req: Request,
