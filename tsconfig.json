@@ -18,19 +18,18 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
-    "baseUrl": ".",
     "paths": {
       "@/prisma": [
-        "src/lib/prisma"
+        "./src/lib/prisma"
       ],
       "@/types": [
-        "src/types"
+        "./src/types"
       ],
       "@/lib/*": [
-        "src/lib/*"
+        "./src/lib/*"
       ],
       "@/src/*": [
-        "src/*"
+        "./src/*"
       ]
     },
     "plugins": [
